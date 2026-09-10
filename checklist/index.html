@@ -20,7 +20,6 @@
   }
 
   .app {
-    min-height: 100vh;
     padding: 0px 20px 48px 20px;
     max-width: 480px;
     margin: 0 auto;
@@ -260,9 +259,19 @@
 </style>
 </head>
 <body class="theme-checklist">
-  <div class="app-install-banner">
-    <span>💡 <strong>Tip for the best experience:</strong> Click the three dots <strong>(...)</strong> in your browser toolbar &rarr; <strong>Save and share</strong> &rarr; <strong>Install page as app...</strong> (and check <strong>"Open as window"</strong>) to turn this into a desktop applet!</span>
+ <div class="app-install-banner" id="installBanner">
+    <span>💡 <strong>Tip for the best experience:</strong> Click the three dots <strong>(...)</strong> in your browser toolbar &rarr; <strong>Save and share</strong> &rarr; <strong>Create Shortcut...</strong> (and check <strong>"Open as window"</strong>) to turn this into a desktop applet!</span>
+    <button onclick="dismissBanner()" style="background: var(--primary-color); color: var(--text-muted); border: none; padding: 6px 12px; font-size: 13px; border-radius: 4px; cursor: pointer; font-weight: 500; white-space: nowrap;">Got it!</button>
 </div>
+
+<script>
+    function dismissBanner() {
+        const banner = document.getElementById('installBanner');
+        if (banner) {
+            banner.style.display = 'none';
+        }
+    }
+</script>
 <div class="app">
 
   <div class="header">
