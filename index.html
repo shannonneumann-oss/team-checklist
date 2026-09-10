@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Tools Dashboard</title>
+    <link rel="stylesheet" href="/team-checklist/assets/style.css">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -52,38 +53,10 @@
         .app-button:hover {
             background: #106ebe;
         }
-        /* Styling for the install banner */
-        .app-install-banner {
-            background: #e1dfdd;
-            color: #323130;
-            padding: 12px 20px;
-            text-align: center;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            font-size: 14px;
-            border-bottom: 1px solid #c8c6c4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .app-install-banner strong {
-            color: #0078d4;
-        }
-
-        /* MAGIC: This completely hides the banner when it's running as a desktop app! */
-        @media (display-mode: standalone) {
-            .app-install-banner {
-                display: none !important;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="app-install-banner">
-    <span>💡 <strong>Tip for the best experience:</strong> Click the three dots <strong>(...)</strong> in your browser toolbar &rarr; <strong>Save and share</strong> &rarr; <strong>Create Shortcut...</strong> (and check <strong>"Open as window"</strong>) to turn this into a desktop applet!</span>
-    /div>
+
     <div class="container">
         <h1>EPAM Team Tools 🚀</h1>
         <p>Select a tool below to launch in app mode</p>

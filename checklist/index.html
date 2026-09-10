@@ -5,56 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Task Checklist</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./Task Checklist Light Fixed_files/css2" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #CAA8F5;
-      --bghead: rgba(245,242,237,0.08);
-    --surface: #5F4BB6;
-    --surface2: #5F4BB6;
-    --border: rgba(0,0,0,0.09);
-    --border-strong: rgba(0,0,0,0.15);
-    --text: #F0EDE8;
-    --text-muted: #5F4BB6;
-    --text-faint: #CAA8F5;
-    --accent: #47500b;
-    --accent-bg: #EAF2EC;
-    --accent-text: #47500b;
-    --danger: #FF9B71;
-    --danger-bg: #2A1A1A;
-    --check-bg: #2D5A3D;
-    --mono: 'DM Mono', monospace;
-    --sans: 'EB Garamond', sans-serif;
-    --radius: 10px;
-    --radius-sm: 6px;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #5F4BB6;
-      --bghead: rgba(95,75,182,0.08);
-      --surface: #CAA8F5;
-      --surface2: #CAA8F5;
-      --border: rgba(0,0,0,0.08);
-      --border-strong: rgba(0,0,0,0.14);
-      --text: #F0EDE8;
-      --text-muted: #CAA8F5;
-      --text-faint: #5F4BB6;
-      --accent: #B6C649;
-      --accent-bg: #1A2B1E;
-      --accent-text: #B6C649;
-      --danger: #FF9B71;
-      --danger-bg: #2A1A1A;
-      --check-bg: #5F4BB6;
-    }
-  }
+ *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
     height: 100%;
-    background: var(--bg);
-    color: var(--text);
+    background: var(--bg-color);
+    color: var(--text-main);
     font-family: var(--sans);
     font-size: 14px;
     line-height: 1.5;
@@ -69,13 +27,13 @@
   }
 
   /* Header */
-  .header {
+    .header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     margin-bottom: 24px;
     position: sticky;
-    background-color: var(--bghead);
+    background-color: var(--card-bg);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     top: 0px;
@@ -103,7 +61,7 @@
   .task-name {
     font-size: 20px;
     font-weight: 500;
-    color: var(--accent);
+    color: var(--primary-color);
     letter-spacing: -0.02em;
   }
   .progress-badge {
@@ -113,15 +71,15 @@
     padding: 4px 10px;
     border-radius: 20px;
     border: 1px solid var(--border-strong);
-    background: var(--surface2);
-    color: var(--text-faint);
+    background: var(--primary-hover);
+    color: var(--text-muted);
     transition: all 0.2s ease;
     white-space: nowrap;
     margin-top: 4px;
   }
   .progress-badge.done {
-    background: var(--accent);
-    color: var(--text-faint);
+    background: var(--primary-color);
+    color: var(--text-muted);
   }
 
   /* Ticket input */
@@ -140,7 +98,7 @@
     height: 38px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border-strong);
-    background: var(--surface);
+    background: var(--card-bg);
     color: var(--text);
     font-family: var(--mono);
     font-size: 12px;
@@ -148,7 +106,7 @@
     outline: none;
     transition: border-color 0.15s;
   }
-  .ticket-input::placeholder { color: var(--text-faint); }
+  .ticket-input::placeholder { color: var(--text-muted); }
 
   /* Timer */
   .timer-grid {
@@ -158,7 +116,7 @@
     margin-bottom: 24px;
   }
   .timer-card {
-    background: var(--surface);
+    background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 12px;
@@ -171,16 +129,16 @@
     font-size: 9px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-faint);
+    color: var(--text-muted);
   }
   .timer-val {
     font-family: var(--mono);
     font-size: 15px;
     font-weight: 500;
-    color: var(--text);
+    color: var(--text-main);
     letter-spacing: -0.01em;
   }
-  .timer-val.empty { color: var(--text-faint); font-weight: 400; }
+  .timer-val.empty { color: var(--text-muted); font-weight: 400; }
   .timer-btn {
     font-family: var(--mono);
     font-size: 10px;
@@ -189,7 +147,7 @@
     padding: 4px 8px;
     border-radius: 4px;
     border: 1px solid rgba(0, 0, 0, 0);
-    background: var(--accent);
+    background: var(--primary-color);
     color: var(--text);
     cursor: pointer;
     transition: all 0.15s;
@@ -198,9 +156,9 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
     background: rgba(255, 255, 255, 0.03);
   }
-  .timer-btn.danger.ended { opacity: 0.35; cursor: default; background: var(--danger); color: var(--text-faint); }
-  .timer-btn:hover:not(:disabled) { background: var(--accent); color: var(--text-faint);box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px; transform: scale(1.05);}
-  .timer-btn:disabled { opacity: 0.35; cursor: default; background: var(--accent); color: var(--text-faint)}
+  .timer-btn.danger.ended { opacity: 0.35; cursor: default; background: var(--danger); color: var(--text-muted); }
+  .timer-btn:hover:not(:disabled) { background: var(--primary-color); color: var(--text-muted);box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px; transform: scale(1.05);}
+  .timer-btn:disabled { opacity: 0.35; cursor: default; background: var(--primary-color); color: var(--text-muted)}
   .timer-btn.danger { color: var(--text); background-color: rgba(255, 255, 255, 0.03);}
   .timer-btn.danger:hover:not(:disabled) { background: var(--danger); }
 
@@ -217,7 +175,7 @@
     font-size: 9px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--primary-color);
     white-space: nowrap;
   }
 
@@ -227,7 +185,7 @@
     align-items: flex-start;
     gap: 12px;
     padding: 12px 14px;
-    background: var(--surface);
+    background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     margin-bottom: 5px;
@@ -236,7 +194,7 @@
     -webkit-user-select: none;
     user-select: none;
   }
-  .item:hover { background: var(--surface2); border-color: var(--border-strong); }
+  .item:hover { background: var(--card-bg2); border-color: var(--border-strong); }
   .item:active { transform: scale(0.995); }
   .item.checked { opacity: 0.48; }
   .item.checked .item-main { text-decoration: line-through; color: var(--text); }
@@ -264,17 +222,17 @@
 
   .item-content { flex: 1; }
   .item-main { font-size: 13.5px; font-weight: 400; color: var(--text); transition: color 0.12s; }
-  .item-sub { font-size: 11.5px; color: var(--text-faint); margin-top: 2px; }
+  .item-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
 
   /* Done banner */
   .done-banner {
     display: none;
-    background-color: var(--accent);
-    border: 1px solid var(--accent-text);
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-hover);
     border-radius: var(--radius-sm);
     padding: 11px 16px;
     font-size: 13px;
-    color: var(--text-faint);
+    color: var(--text-muted);
     font-weight: 500;
     text-align: center;
     margin: 20px 0 0;
@@ -290,7 +248,7 @@
     font-family: var(--mono);
     font-size: 10px;
     letter-spacing: 0.08em;
-    color: var(--accent);
+    color: var(--primary-color);
     background: none;
     border: none;
     cursor: pointer;
@@ -301,7 +259,10 @@
   .reset-btn:hover { color: #FF9B71; }
 </style>
 </head>
-<body>
+<body class="theme-default">
+  <div class="app-install-banner">
+    <span>💡 <strong>Tip for the best experience:</strong> Click the three dots <strong>(...)</strong> in your browser toolbar &rarr; <strong>Save and share</strong> &rarr; <strong>Install page as app...</strong> (and check <strong>"Open as window"</strong>) to turn this into a desktop applet!</span>
+</div>
 <div class="app">
 
   <div class="header">
