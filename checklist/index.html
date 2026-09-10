@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Task Checklist</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
-<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="../css/style.css">
 <style>
  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -33,7 +33,7 @@
     justify-content: space-between;
     margin-bottom: 24px;
     position: sticky;
-    background-color: var(--card-bg);
+    background-color: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     top: 0px;
@@ -71,8 +71,8 @@
     padding: 4px 10px;
     border-radius: 20px;
     border: 1px solid var(--border-strong);
-    background: var(--primary-hover);
-    color: var(--text-muted);
+    background: var(--card-bg);
+    color: var(--text-main);
     transition: all 0.2s ease;
     white-space: nowrap;
     margin-top: 4px;
@@ -106,7 +106,7 @@
     outline: none;
     transition: border-color 0.15s;
   }
-  .ticket-input::placeholder { color: var(--text-muted); }
+  .ticket-input::placeholder { color: var(--text-main); }
 
   /* Timer */
   .timer-grid {
@@ -129,7 +129,7 @@
     font-size: 9px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--text-main);
   }
   .timer-val {
     font-family: var(--mono);
@@ -138,7 +138,7 @@
     color: var(--text-main);
     letter-spacing: -0.01em;
   }
-  .timer-val.empty { color: var(--text-muted); font-weight: 400; }
+  .timer-val.empty { color: var(--text-main); font-weight: 400; }
   .timer-btn {
     font-family: var(--mono);
     font-size: 10px;
@@ -156,11 +156,11 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
     background: rgba(255, 255, 255, 0.03);
   }
-  .timer-btn.danger.ended { opacity: 0.35; cursor: default; background: var(--danger); color: var(--text-muted); }
+  .timer-btn.danger.ended { opacity: 0.35; cursor: default; background: var(--primary-hover); color: var(--text-muted); }
   .timer-btn:hover:not(:disabled) { background: var(--primary-color); color: var(--text-muted);box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px; transform: scale(1.05);}
   .timer-btn:disabled { opacity: 0.35; cursor: default; background: var(--primary-color); color: var(--text-muted)}
   .timer-btn.danger { color: var(--text); background-color: rgba(255, 255, 255, 0.03);}
-  .timer-btn.danger:hover:not(:disabled) { background: var(--danger); }
+  .timer-btn.danger:hover:not(:disabled) { background: var(--primary-hover); color: var(--text-main);}
 
   /* Divider with label */
   .section-divider {
@@ -194,7 +194,7 @@
     -webkit-user-select: none;
     user-select: none;
   }
-  .item:hover { background: var(--card-bg2); border-color: var(--border-strong); }
+  .item:hover { background: var(--card-bg); border-color: var(--border-strong); }
   .item:active { transform: scale(0.995); }
   .item.checked { opacity: 0.48; }
   .item.checked .item-main { text-decoration: line-through; color: var(--text); }
@@ -214,25 +214,25 @@
     background: rgba(255, 255, 255, 0.03);
   }
   .item.checked .checkbox {
-    background: var(--check-bg);
-    border-color: var(--check-bg);
+    background: var(--checked);
+    border-color: var(--checked);
   }
   .checkmark { display: none; }
   .item.checked .checkmark { display: block; }
 
   .item-content { flex: 1; }
-  .item-main { font-size: 13.5px; font-weight: 400; color: var(--text); transition: color 0.12s; }
-  .item-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+  .item-main { font-size: 13.5px; font-weight: 400; color: var(--text-main); transition: color 0.12s; }
+  .item-sub { font-size: 11.5px; color: var(--text-faint); margin-top: 2px; }
 
   /* Done banner */
   .done-banner {
     display: none;
     background-color: var(--primary-color);
-    border: 1px solid var(--primary-hover);
+    border: 1px solid var(--primary-color);
     border-radius: var(--radius-sm);
     padding: 11px 16px;
     font-size: 13px;
-    color: var(--text-muted);
+    color: var(--text-main);
     font-weight: 500;
     text-align: center;
     margin: 20px 0 0;
@@ -256,10 +256,10 @@
     text-underline-offset: 3px;
     transition: color 0.15s;
   }
-  .reset-btn:hover { color: #FF9B71; }
+  .reset-btn:hover { color: var(--primary-hover); }
 </style>
 </head>
-<body class="theme-default">
+<body class="theme-checklist">
   <div class="app-install-banner">
     <span>💡 <strong>Tip for the best experience:</strong> Click the three dots <strong>(...)</strong> in your browser toolbar &rarr; <strong>Save and share</strong> &rarr; <strong>Install page as app...</strong> (and check <strong>"Open as window"</strong>) to turn this into a desktop applet!</span>
 </div>
@@ -303,7 +303,7 @@
   </div>
 
   <div class="item" id="i0" onclick="toggle(0)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="var(--text-main)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
     <div class="item-content">
       <div class="item-main">Review the ticket brief</div>
       <div class="item-sub">Check deliverable specs, copy &amp; imagery</div>
@@ -311,7 +311,7 @@
   </div>
 
   <div class="item" id="i1" onclick="toggle(1)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="var(--text-main)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
     <div class="item-content">
       <div class="item-main">Check for updated template</div>
       <div class="item-sub">Make sure you're working from the latest version</div>
@@ -319,7 +319,7 @@
   </div>
 
   <div class="item" id="i2" onclick="toggle(2)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="var(--text-main)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
     <div class="item-content">
       <div class="item-main">Set up folder</div>
       <div class="item-sub">Create the project folder structure before starting</div>
@@ -334,7 +334,7 @@
   </div>
 
   <div class="item" id="i3" onclick="toggle(3)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="var(--text-main)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
     <div class="item-content">
       <div class="item-main">Complete the asset</div>
       <div class="item-sub">Design, animate, edit — do the work</div>
@@ -349,7 +349,7 @@
   </div>
 
   <div class="item" id="i4" onclick="toggle(4)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="var(--text-main)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
     <div class="item-content">
       <div class="item-main">Review asset</div>
       <div class="item-sub">Check copy, brand, quality &amp; output against the brief</div>
@@ -357,7 +357,7 @@
   </div>
 
   <div class="item" id="i5" onclick="toggle(5)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="var(--text-main)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
     <div class="item-content">
       <div class="item-main">Self-approve asset</div>
       <div class="item-sub">Satisfied it's ready? Proceed.</div>
@@ -365,7 +365,7 @@
   </div>
 
   <div class="item" id="i6" onclick="toggle(6)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="var(--text-main)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
       <div class="item-content">
           <div class="item-main">Check specs &amp; compress files if necessary</div>
           <div class="item-sub">Verify file type, size &amp; format requirements for each deliverable</div>
@@ -380,7 +380,7 @@
   </div>
 
   <div class="item" id="i7" onclick="toggle(7)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="var(--text-main)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
       <div class="item-content">
           <div class="item-main">Upload final asset</div>
           <div class="item-sub">Upload to the correct location &amp; copy the asset link</div>
@@ -389,7 +389,7 @@
     
 
   <div class="item" id="i8" onclick="toggle(8)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="var(--text-main)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
     <div class="item-content">
       <div class="item-main">Collect, zip &amp; upload source files</div>
       <div class="item-sub">e.g. Figma, PSD, After Effects — gather all, zip &amp; upload</div>
@@ -404,7 +404,7 @@
   </div>
 
   <div class="item" id="i9" onclick="toggle(9)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="var(--text-main)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
     <div class="item-content">
       <div class="item-main">Post to Teams approvals channel</div>
       <div class="item-sub">Include ticket link + asset link in your message</div>
@@ -412,7 +412,7 @@
   </div>
 
     <div class="item" id="i10" onclick="toggle(10)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="var(--text-main)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
     <div class="item-content">
       <div class="item-main">Update ticket status</div>
       <div class="item-sub">Move the ticket over in Jira</div>

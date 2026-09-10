@@ -1,11 +1,15 @@
 /* --- Master Global Theme & Variables --- */
 :root, body.theme-default {
-    --primary-color: #0078d4;
-    --primary-hover: #106ebe;
-    --bg-color: #3e3c3c;
-    --card-bg: #626262;
-    --text-main: #f2f2f2;
+    --primary-color: #d47100;
+    --primary-hover: #ae5e02;
+    --bg-color: #3c3c3c;
+    --card-bg: #dedede;
+    --text-main: #272626;
     --text-muted: #666666;
+    --text-faint: #a8a7a7;
+    --checked: #272626;
+    --mono: 'DM Mono', monospace;
+    --sans: 'EB Garamond', sans-serif;
     --border: rgba(0,0,0,0.08);
     --border-strong: rgba(0,0,0,0.14);
     --radius: 10px;
@@ -13,13 +17,20 @@
 }
 
 body.theme-checklist {
-    --primary-color: #107c41;
-    --primary-hover: #0b5a2f;
-    --bg-color: #f3f2f1;
-    --card-bg: #ffffff;
-    --text-main: #201f1e;
-    --text-muted: #605e5c;
-    --border-color: #c8c6c4;
+    --primary-color: #cced29;
+    --primary-hover: #984c20;
+    --bg-color: #CAA8F5;
+    --card-bg: #5F4BB6;
+    --text-main: #F0EDE8;
+    --text-muted: #5F4BB6;
+    --text-faint: #CAA8F5;
+    --checked: #403085;
+    --mono: 'DM Mono', monospace;
+    --sans: 'EB Garamond', sans-serif;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.14);
+    --radius: 10px;
+    --radius-sm: 6px;
 }
 
 /* Global Font & Background (Safe for all pages) */
@@ -33,12 +44,13 @@ body {
 
 /* Browser Install Banner */
 .app-install-banner {
-    background: #fff4ce;
-    color: #323130;
+    background: var(--card-bg);
+    color: var(--text-main);
     padding: 12px 20px;
     text-align: center;
+    font-family: var(--sans);
     font-size: 14px;
-    border-bottom: 1px solid #ffebe8;
+    border-bottom: 1px solid var(--border-strong);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,7 +59,7 @@ body {
 }
 
 .app-install-banner strong {
-    color: var(--primary-color);
+    color: #b9c856;
 }
 
 @media (display-mode: standalone) {
