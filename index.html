@@ -1,558 +1,84 @@
 <!DOCTYPE html>
-<!-- saved from url=(0076)file:///Users/shannon_neumann/Downloads/Task%20Checklist%202%20(5.5.26).html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Task Checklist</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./Task Checklist Light Fixed_files/css2" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #CAA8F5;
-      --bghead: rgba(245,242,237,0.08);
-    --surface: #5F4BB6;
-    --surface2: #5F4BB6;
-    --border: rgba(0,0,0,0.09);
-    --border-strong: rgba(0,0,0,0.15);
-    --text: #F0EDE8;
-    --text-muted: #5F4BB6;
-    --text-faint: #CAA8F5;
-    --accent: #47500b;
-    --accent-bg: #EAF2EC;
-    --accent-text: #47500b;
-    --danger: #FF9B71;
-    --danger-bg: #2A1A1A;
-    --check-bg: #2D5A3D;
-    --mono: 'DM Mono', monospace;
-    --sans: 'EB Garamond', sans-serif;
-    --radius: 10px;
-    --radius-sm: 6px;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #5F4BB6;
-      --bghead: rgba(95,75,182,0.08);
-      --surface: #CAA8F5;
-      --surface2: #CAA8F5;
-      --border: rgba(0,0,0,0.08);
-      --border-strong: rgba(0,0,0,0.14);
-      --text: #F0EDE8;
-      --text-muted: #CAA8F5;
-      --text-faint: #5F4BB6;
-      --accent: #B6C649;
-      --accent-bg: #1A2B1E;
-      --accent-text: #B6C649;
-      --danger: #FF9B71;
-      --danger-bg: #2A1A1A;
-      --check-bg: #5F4BB6;
-    }
-  }
-
-  html, body {
-    height: 100%;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 14px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  .app {
-    min-height: 100vh;
-    padding: 0px 20px 48px 20px;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-
-  /* Header */
-  .header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 24px;
-    position: sticky;
-    background-color: var(--bghead);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    top: 0px;
-    z-index: 100;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px;
-    align-items: center;
-    width: auto;
-    padding-left: 20px;
-    padding-right: 20px;
-    box-sizing: border-box;
-    margin-left: -20px;
-    margin-right: -20px;
-  }
-  .header-left { display: flex; flex-direction: column; gap: 2px; }
-  .app-title {
-    font-size: 11px;
-    font-family: var(--mono);
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-  .task-name {
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--accent);
-    letter-spacing: -0.02em;
-  }
-  .progress-badge {
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 500;
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1px solid var(--border-strong);
-    background: var(--surface2);
-    color: var(--text-faint);
-    transition: all 0.2s ease;
-    white-space: nowrap;
-    margin-top: 4px;
-  }
-  .progress-badge.done {
-    background: var(--accent);
-    color: var(--text-faint);
-  }
-
-  /* Ticket input */
-  .field-group { margin-bottom: 20px; }
-  .field-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-    display: block;
-  }
-  .ticket-input {
-    width: 100%;
-    height: 38px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-strong);
-    background: var(--surface);
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 12px;
-    padding: 0 12px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .ticket-input::placeholder { color: var(--text-faint); }
-
-  /* Timer */
-  .timer-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-  .timer-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .timer-card-label {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-  }
-  .timer-val {
-    font-family: var(--mono);
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text);
-    letter-spacing: -0.01em;
-  }
-  .timer-val.empty { color: var(--text-faint); font-weight: 400; }
-  .timer-btn {
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    padding: 4px 8px;
-    border-radius: 4px;
-    border: 1px solid rgba(0, 0, 0, 0);
-    background: var(--accent);
-    color: var(--text);
-    cursor: pointer;
-    transition: all 0.15s;
-    margin-top: 2px;
-    width: fit-content;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
-    background: rgba(255, 255, 255, 0.03);
-  }
-  .timer-btn.danger.ended { opacity: 0.35; cursor: default; background: var(--danger); color: var(--text-faint); }
-  .timer-btn:hover:not(:disabled) { background: var(--accent); color: var(--text-faint);box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px; transform: scale(1.05);}
-  .timer-btn:disabled { opacity: 0.35; cursor: default; background: var(--accent); color: var(--text-faint)}
-  .timer-btn.danger { color: var(--text); background-color: rgba(255, 255, 255, 0.03);}
-  .timer-btn.danger:hover:not(:disabled) { background: var(--danger); }
-
-  /* Divider with label */
-  .section-divider {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 20px 0 10px;
-  }
-  .section-divider-line { flex: 1; height: 1px; background: var(--text-muted); }
-  .section-divider-text {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    white-space: nowrap;
-  }
-
-  /* Checklist items */
-  .item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 14px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    margin-bottom: 5px;
-    cursor: pointer;
-    transition: background 0.12s, border-color 0.12s;
-    -webkit-user-select: none;
-    user-select: none;
-  }
-  .item:hover { background: var(--surface2); border-color: var(--border-strong); }
-  .item:active { transform: scale(0.995); }
-  .item.checked { opacity: 0.48; }
-  .item.checked .item-main { text-decoration: line-through; color: var(--text); }
-
-  .checkbox {
-    width: 18px;
-    height: 18px;
-    min-width: 18px;
-    border-radius: 5px;
-    border: none;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1px;
-    transition: background 0.15s, border-color 0.15s;
-    background: rgba(255, 255, 255, 0.03);
-  }
-  .item.checked .checkbox {
-    background: var(--check-bg);
-    border-color: var(--check-bg);
-  }
-  .checkmark { display: none; }
-  .item.checked .checkmark { display: block; }
-
-  .item-content { flex: 1; }
-  .item-main { font-size: 13.5px; font-weight: 400; color: var(--text); transition: color 0.12s; }
-  .item-sub { font-size: 11.5px; color: var(--text-faint); margin-top: 2px; }
-
-  /* Done banner */
-  .done-banner {
-    display: none;
-    background-color: var(--accent);
-    border: 1px solid var(--accent-text);
-    border-radius: var(--radius-sm);
-    padding: 11px 16px;
-    font-size: 13px;
-    color: var(--text-faint);
-    font-weight: 500;
-    text-align: center;
-    margin: 20px 0 0;
-    font-family: var(--mono);
-    letter-spacing: 0.02em;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
-  }
-  .done-banner.show { display: block; }
-
-  /* Reset */
-  .reset-wrap { text-align: center; margin-top: 28px; }
-  .reset-btn {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    color: var(--accent);
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    transition: color 0.15s;
-  }
-  .reset-btn:hover { color: #FF9B71; }
-</style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Tools Dashboard</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f5f7;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            width: 350px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #111;
+        }
+        p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .app-button {
+            display: block;
+            width: 100%;
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 14px 0;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            transition: background 0.2s;
+        }
+        .app-button:hover {
+            background: #106ebe;
+        }
+    </style>
 </head>
 <body>
-<div class="app">
 
-  <div class="header">
-    <div class="header-left">
-      <span class="app-title">Task checklist</span>
-      <span class="task-name" id="taskName">New task</span>
+    <div class="container">
+        <h1>EPAM Team Tools 🚀</h1>
+        <p>Select a tool below to launch in app mode</p>
+
+        <!-- Tool 1: Task Checklist -->
+        <a href="#" class="app-button" onclick="openApp('checklist/')">
+            📋 Task Checklist
+        </a>
+
+        <!-- FUTURE TOOLS CAN BE ADDED HERE EASILY:
+        <a href="#" class="app-button" onclick="openApp('your-next-tool/')">
+            ✨ Your Next Tool
+        </a>
+        -->
     </div>
-    <span class="progress-badge" id="pill">0 / 11</span>
-  </div>
 
-  <div class="field-group">
-    <label class="field-label" for="ticketInput">Ticket reference</label>
-    <input class="ticket-input" id="ticketInput" type="text" placeholder="What are you working on?" oninput="updateTaskName(this.value)">
-  </div>
+    <script>
+        function openApp(path) {
+            // Gets the base URL and appends the tool path, opening it in a clean popup window
+            const targetUrl = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/') + path;
+            window.open(targetUrl, '_blank', 'width=500,height=700,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes');
+        }
+    </script>
 
-  <div class="timer-grid">
-    <div class="timer-card">
-      <span class="timer-card-label">Started</span>
-      <span class="timer-val empty" id="startVal">—</span>
-      <button class="timer-btn" id="startBtn" onclick="startTimer()">Start</button>
-    </div>
-    <div class="timer-card">
-      <span class="timer-card-label">Elapsed</span>
-      <span class="timer-val empty" id="elapsedVal">—</span>
-    </div>
-    <div class="timer-card">
-      <span class="timer-card-label">Ended</span>
-      <span class="timer-val empty" id="endVal">—</span>
-      <button class="timer-btn danger" id="endBtn" onclick="endTimer()" disabled="">End</button>
-    </div>
-  </div>
-
-  <!-- Before you start -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <span class="section-divider-text">Before you start</span>
-    <div class="section-divider-line"></div>
-  </div>
-
-  <div class="item" id="i0" onclick="toggle(0)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
-    <div class="item-content">
-      <div class="item-main">Review the ticket brief</div>
-      <div class="item-sub">Check deliverable specs, copy &amp; imagery</div>
-    </div>
-  </div>
-
-  <div class="item" id="i1" onclick="toggle(1)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
-    <div class="item-content">
-      <div class="item-main">Check for updated template</div>
-      <div class="item-sub">Make sure you're working from the latest version</div>
-    </div>
-  </div>
-
-  <div class="item" id="i2" onclick="toggle(2)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
-    <div class="item-content">
-      <div class="item-main">Set up folder</div>
-      <div class="item-sub">Create the project folder structure before starting</div>
-    </div>
-  </div>
-
-  <!-- Asset work -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <span class="section-divider-text">Asset work</span>
-    <div class="section-divider-line"></div>
-  </div>
-
-  <div class="item" id="i3" onclick="toggle(3)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
-    <div class="item-content">
-      <div class="item-main">Complete the asset</div>
-      <div class="item-sub">Design, animate, edit — do the work</div>
-    </div>
-  </div>
-
-  <!-- Asset review -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <span class="section-divider-text">Asset review</span>
-    <div class="section-divider-line"></div>
-  </div>
-
-  <div class="item" id="i4" onclick="toggle(4)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
-    <div class="item-content">
-      <div class="item-main">Review asset</div>
-      <div class="item-sub">Check copy, brand, quality &amp; output against the brief</div>
-    </div>
-  </div>
-
-  <div class="item" id="i5" onclick="toggle(5)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
-    <div class="item-content">
-      <div class="item-main">Self-approve asset</div>
-      <div class="item-sub">Satisfied it's ready? Proceed.</div>
-    </div>
-  </div>
-
-  <div class="item" id="i6" onclick="toggle(6)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
-      <div class="item-content">
-          <div class="item-main">Check specs &amp; compress files if necessary</div>
-          <div class="item-sub">Verify file type, size &amp; format requirements for each deliverable</div>
-    </div>
-</div>
-
-  <!-- Upload & files -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <span class="section-divider-text">Upload &amp; files</span>
-    <div class="section-divider-line"></div>
-  </div>
-
-  <div class="item" id="i7" onclick="toggle(7)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
-      <div class="item-content">
-          <div class="item-main">Upload final asset</div>
-          <div class="item-sub">Upload to the correct location &amp; copy the asset link</div>
-    </div>
-  </div>
-    
-
-  <div class="item" id="i8" onclick="toggle(8)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
-    <div class="item-content">
-      <div class="item-main">Collect, zip &amp; upload source files</div>
-      <div class="item-sub">e.g. Figma, PSD, After Effects — gather all, zip &amp; upload</div>
-    </div>
-  </div>
-
-  <!-- Post & close -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <span class="section-divider-text">Post &amp; close</span>
-    <div class="section-divider-line"></div>
-  </div>
-
-  <div class="item" id="i9" onclick="toggle(9)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
-    <div class="item-content">
-      <div class="item-main">Post to Teams approvals channel</div>
-      <div class="item-sub">Include ticket link + asset link in your message</div>
-    </div>
-  </div>
-
-    <div class="item" id="i10" onclick="toggle(10)">
-    <div class="checkbox"><svg class="checkmark" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
-    <div class="item-content">
-      <div class="item-main">Update ticket status</div>
-      <div class="item-sub">Move the ticket over in Jira</div>
-    </div>
-  </div>
-    
-  <div class="done-banner" id="doneBanner">All done — task complete.</div>
-
-  <div class="reset-wrap">
-    <button class="reset-btn" onclick="resetAll()">Reset for next task</button>
-  </div>
-
-</div>
-<script>
-  const TOTAL = 11;
-  let checked = new Array(TOTAL).fill(false);
-  let startTime = null, endTime = null, ticker = null;
-
-  function toggle(i) {
-    checked[i] = !checked[i];
-    document.getElementById('i' + i).classList.toggle('checked', checked[i]);
-    updateProgress();
-  }
-
-  function updateProgress() {
-    const count = checked.filter(Boolean).length;
-    const pill = document.getElementById('pill');
-    pill.textContent = count + ' / ' + TOTAL;
-    pill.classList.toggle('done', count === TOTAL);
-    document.getElementById('doneBanner').classList.toggle('show', count === TOTAL);
-  }
-
-  function updateTaskName(val) {
-    const name = val.trim();
-    document.getElementById('taskName').textContent = name || 'New task';
-  }
-
-  function fmt(d) {
-    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }
-
-  function pad(n) { return String(n).padStart(2, '0'); }
-
-  function updateElapsed() {
-    if (!startTime) return;
-    const ref = endTime || new Date();
-    const secs = Math.floor((ref - startTime) / 1000);
-    const h = Math.floor(secs / 3600);
-    const m = Math.floor((secs % 3600) / 60);
-    const s = secs % 60;
-    const val = h > 0
-      ? h + ':' + pad(m) + ':' + pad(s)
-      : m + ':' + pad(s);
-    const el = document.getElementById('elapsedVal');
-    el.textContent = val;
-    el.classList.remove('empty');
-  }
-
-  function startTimer() {
-    startTime = new Date();
-    const sv = document.getElementById('startVal');
-    sv.textContent = fmt(startTime);
-    sv.classList.remove('empty');
-    document.getElementById('startBtn').disabled = true;
-    document.getElementById('endBtn').disabled = false;
-    ticker = setInterval(updateElapsed, 1000);
-    updateElapsed();
-  }
-
-  function endTimer() {
-    endTime = new Date();
-    clearInterval(ticker);
-    const ev = document.getElementById('endVal');
-    ev.textContent = fmt(endTime);
-    ev.classList.remove('empty');
-    document.getElementById('endBtn').disabled = true;
-    document.getElementById('endBtn').classList.add('ended');
-    updateElapsed();
-  }
-
-  function resetAll() {
-    checked = new Array(TOTAL).fill(false);
-    for (let i = 0; i < TOTAL; i++) document.getElementById('i' + i).classList.remove('checked');
-    startTime = null; endTime = null;
-    clearInterval(ticker);
-    ['startVal','endVal','elapsedVal'].forEach(id => {
-      const el = document.getElementById(id);
-      el.textContent = '—';
-      el.classList.add('empty');
-    });
-    document.getElementById('startBtn').disabled = false;
-    document.getElementById('endBtn').disabled = true;
-    document.getElementById('ticketInput').value = '';
-    document.getElementById('taskName').textContent = 'New task';
-    document.getElementById('doneBanner').classList.remove('show');
-    document.getElementById('pill').textContent = '0 / ' + TOTAL;
-    document.getElementById('endBtn').classList.remove('ended');
-
-    document.getElementById('pill').classList.remove('done');
-  }
-</script>
-
-
-</body></html>
+</body>
+</html>
