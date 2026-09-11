@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jira Ticket Builder</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com/" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="icon" href="../favicon (1).ico" type="image/x-icon" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--sans);
+      letter-spacing: var(--letter-spacing);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      padding: 0px 20px 48px 20px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    /* Header (copied/compatible with your tool) */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      position: sticky;
+      background-color: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      top: 0px;
+      z-index: 100;
+      padding-top: 16px;
+      padding-bottom: 16px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px;
+      align-items: center;
+      width: auto;
+      padding-left: 20px;
+      padding-right: 20px;
+      box-sizing: border-box;
+      margin-left: -20px;
+      margin-right: -20px;
+    }
+    .header-left { display: flex; flex-direction: column; gap: 2px; }
+    .app-title {
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: 500;
+      letter-spacing: var(--letter-spacing);
+      text-transform: uppercase;
+      color: var(--text-main);
+    }
+    .task-name {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--primary-color);
+      letter-spacing: var(--letter-spacing);
+    }
+    .progress-badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border-strong);
+      background: var(--card-bg);
+      color: var(--text-main);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      margin-top: 4px;
+    }
+    .progress-badge.done {
+    background: var(--primary-color);
+    color: var(--text-muted);
+    }
+
+    /* Field styling (aligned with your tool) */
+    .field-group { margin-bottom: 16px; }
+    .field-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: var(--letter-spacing);
+      text-transform: uppercase;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      display: block;
+    }
+    .text-input, .text-area, .select-input {
+      width: 100%;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-strong);
+      background: var(--bg-color);
+      color: var(--text-main);  
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: var(--letter-spacing);
+      padding: 10px 12px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .text-input { height: 38px; padding: 0 12px; }
+    .text-area { min-height: 92px; resize: vertical; }
+    .help {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--text-faint);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    /* Divider with label (copied/compatible) */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 16px 0 10px;
+    }
+    .section-divider-line { flex: 1; height: 1px; background: var(--text-faint); }
+    .section-divider-text {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: var(--letter-spacing);
+      text-transform: uppercase;
+      color: var(--primary-color);
+      white-space: nowrap;
+    }
+
+    /* Buttons (compatible with timer-btn feel) */
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .btn {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: var(--letter-spacing);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0);
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      width: fit-content;
+    }
+    .btn:hover { transform: scale(1.03); background: var(--primary-color); color: var(--text-muted); }
+    .btn.secondary:hover { background: var(--primary-hover); color: var(--text-main); }
+
+    .reset-wrap { text-align: center; margin-top: 18px; }
+    .reset-btn {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: var(--letter-spacing);
+      color: var(--primary-color);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.15s;
+    }
+    .reset-btn:hover { color: var(--primary-hover); }
+
+    /* Channels checkboxes */
+    .checks {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    @media (max-width: 520px) { .checks { grid-template-columns: 1fr; } }
+
+    .check {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.02);
+    }
+    .check input { width: 18px; height: 18px; }
+    /* Custom checkbox styling */
+    .check input[type="checkbox"]{
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid var(--border-strong);
+    background: rgba(255, 255, 255, 0.07);
+    display: inline-grid;
+    place-content: center;
+    }
+    .check input[type="checkbox"]:hover{
+    outline: none;
+    box-shadow: 0 0 0 0.5px rgba(250, 250, 250, 0.25); /* tweak if needed */
+    transition: box-shadow 120ms ease-in-out;
+    }
+    .check input[type="checkbox"]::before{
+    content: "";
+    width: 10px;
+    height: 10px;
+    transform: scale(0);
+    transition: transform 120ms ease-in-out;
+    background: var(--primary-color);
+    border-radius: 2px;
+    }
+
+    .check input[type="checkbox"]:checked::before{
+    transform: scale(1);
+    }
+
+    .check input[type="checkbox"]:focus{
+    outline: none;
+    box-shadow: 0 0 0 0.5px rgba(250, 250, 250, 0.25); /* tweak if needed */
+    }
+    /* Films rows */
+    .film-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .small-btn {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: var(--letter-spacing);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-strong);
+      background: rgba(255,255,255,0.03);
+      color: var(--text-main);
+      cursor: pointer;
+    }
+    .small-btn:hover { border-color: var(--primary-color); }
+
+    /* Preview blocks */
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: var(--letter-spacing);
+      color: var(--text-main);
+      background: rgba(0,0,0,0.12);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      min-height: 110px;
+    }
+    .mono-note {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: var(--letter-spacing);
+      text-transform: uppercase;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      display: block;
+    }
+    /* Make the calendar icon visible on dark backgrounds (Chrome/Edge/Safari) */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.85;
+    cursor: pointer;
+    }
+    input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+    }
+  </style>
+</head>
+
+<body class="theme-vue">
+  <div class="app">
+    <div class="header">
+      <div class="header-left">
+        <span class="app-title">Jira ticket builder</span>
+        <span class="task-name" id="taskName">New deliverable</span>
+      </div>
+      <span class="progress-badge" id="pill">Missing: —</span>
+    </div>
+
+    <div class="layout">
+      <!-- LEFT: FORM -->
+      <div class="panel">
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <span class="section-divider-text">Basics</span>
+          <div class="section-divider-line"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="assetType">Asset type</label>
+          <input class="text-input" id="assetType" type="text" placeholder="EPIC, ClubVue, BOTBS, TINC, On Sale, Out Now…" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="format">Asset format</label>
+          <select class="select-input" id="format">
+            <option value="">(unknown / TBD)</option>
+            <option value="Static">Static</option>
+            <option value="Video">Video</option>
+            <option value="GIF">GIF</option>
+            <option value="Carousel">Carousel</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="assetDescription">Asset description (manual for now)</label>
+          <input class="text-input" id="assetDescription" type="text" placeholder="Short description of what needs to be designed" />
+          <div class="help">Later: could be pulled from an asset-type database.</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="dueDate">Due date</label>
+          <input class="text-input" id="dueDate" type="date" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="timesheetCode">Timesheet code</label>
+          <input class="text-input" id="timesheetCode" type="text" placeholder="e.g., 12345 / CAMPAIGN-XYZ" />
+        </div>
+
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <span class="section-divider-text">Channel (multi-select)</span>
+          <div class="section-divider-line"></div>
+        </div>
+
+        <div class="checks" id="channelChecks">
+          <label class="check"><input type="checkbox" value="Social" /> <span>Social</span></label>
+          <label class="check"><input type="checkbox" value="Email" /> <span>Email</span></label>
+          <label class="check"><input type="checkbox" value="Web" /> <span>Web</span></label>
+          <label class="check"><input type="checkbox" value="App" /> <span>App</span></label>
+          <label class="check"><input type="checkbox" value="In Venue" /> <span>In Venue</span></label>
+          <label class="check"><input type="checkbox" value="Other" /> <span>Other</span></label>
+        </div>
+
+        <div class="field-group" style="margin-top: 12px;">
+          <label class="field-label" for="campaign">Campaign (optional)</label>
+          <input class="text-input" id="campaign" type="text" placeholder="Campaign name (if applicable)" />
+        </div>
+
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <span class="section-divider-text">Films</span>
+          <div class="section-divider-line"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="check" style="margin:0;">
+            <input type="checkbox" id="internalToggle" />
+            <span>Internal / Not film-related</span>
+          </label>
+          <div class="help">If checked, the Films list will be ignored.</div>
+        </div>
+
+        <div id="filmsBlock">
+          <span class="field-label">Film(s)</span>
+          <div id="filmsList"></div>
+          <div class="btn-row">
+            <button class="small-btn" type="button" id="addFilmBtn">+ Add another film</button>
+          </div>
+          <div class="help">Later: can be a searchable dropdown from a film database.</div>
+        </div>
+
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <span class="section-divider-text">Content inputs</span>
+          <div class="section-divider-line"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="copy">Copy to go on asset (optional)</label>
+          <textarea class="text-area" id="copy" placeholder="Paste the copy that should appear on the creative"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="imagery">Imagery to go on asset (optional)</label>
+          <textarea class="text-area" id="imagery" placeholder="Required imagery, character, key art, stills, logos, etc."></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="storyboard">Storyboard link (optional)</label>
+          <input class="text-input" id="storyboard" type="url" placeholder="https://…" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="mockup">Mockup link (optional)</label>
+          <input class="text-input" id="mockup" type="url" placeholder="https://…" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="designNotes">Design notes (optional)</label>
+          <textarea class="text-area" id="designNotes" placeholder="Any design direction, layout ideas, constraints, etc."></textarea>
+        </div>
+
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <span class="section-divider-text">Specs / links</span>
+          <div class="section-divider-line"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="sizes">Asset size(s) (optional)</label>
+          <textarea class="text-area" id="sizes" placeholder="Example:
+IG Story – 1080x1920
+IG Feed – 1080x1350
+Email hero – 600x300"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="maxFileSize">Max file size (optional)</label>
+          <input class="text-input" id="maxFileSize" type="text" placeholder="e.g., 15MB / platform limit" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="templateLink">Template link (optional)</label>
+          <input class="text-input" id="templateLink" type="url" placeholder="Figma/SharePoint template URL" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="filmAssetLink">Film asset link (optional)</label>
+          <input class="text-input" id="filmAssetLink" type="url" placeholder="SharePoint film folder (or _LATEST) link" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="legalLine">Legal line (optional)</label>
+          <textarea class="text-area" id="legalLine" placeholder="Legal line / disclaimer (if needed)"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="exportLink">Export link (final deliverable location)</label>
+          <input class="text-input" id="exportLink" type="url" placeholder="SharePoint/Drive final export folder or file link" />
+        </div>
+
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <span class="section-divider-text">Review</span>
+          <div class="section-divider-line"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="reviewers">Specific reviewers (optional)</label>
+          <input class="text-input" id="reviewers" type="text" placeholder="Comma-separated names (e.g., Shannon, Alex, Priya)" />
+        </div>
+
+        <div class="reset-wrap">
+          <button class="reset-btn" type="button" id="resetBtn">Reset for next ticket</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: PREVIEW -->
+      <div class="panel">
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <span class="section-divider-text">Jira output (Markdown)</span>
+          <div class="section-divider-line"></div>
+        </div>
+
+        <span class="mono-note">Summary</span>
+        <pre id="summaryPreview">—</pre>
+        <div class="btn-row">
+          <button class="btn" type="button" id="copySummaryBtn">Copy summary</button>
+        </div>
+
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <span class="section-divider-text">Description</span>
+          <div class="section-divider-line"></div>
+        </div>
+
+        <pre id="descPreview">—</pre>
+        <div class="btn-row">
+          <button class="btn" type="button" id="copyDescBtn">Copy description</button>
+          <button class="btn secondary" type="button" id="downloadBtn">Download .md</button>
+        </div>
+
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <span class="section-divider-text">Missing info</span>
+          <div class="section-divider-line"></div>
+        </div>
+
+        <pre id="missingPreview">—</pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Films (multiple) ---
+    let filmRows = 0;
+
+    function addFilmRow(value = '') {
+      const list = document.getElementById('filmsList');
+      const row = document.createElement('div');
+      row.className = 'film-row';
+      row.innerHTML = `
+        <input class="text-input" type="text" placeholder="Film name" value="${escapeAttr(value)}" />
+        <button class="small-btn" type="button">Remove</button>
+      `;
+      row.querySelector('input').addEventListener('input', refreshPreview);
+      row.querySelector('button').addEventListener('click', () => { row.remove(); refreshPreview(); });
+      list.appendChild(row);
+      filmRows++;
+      refreshPreview();
+    }
+
+    function getFilms() {
+      if (document.getElementById('internalToggle').checked) return [];
+      const inputs = [...document.querySelectorAll('#filmsList input')];
+      return inputs.map(i => i.value.trim()).filter(Boolean);
+    }
+
+    // --- Channels (checkbox multi-select) ---
+    function getChannels() {
+      const checks = [...document.querySelectorAll('#channelChecks input[type="checkbox"]')];
+      return checks.filter(c => c.checked).map(c => c.value);
+    }
+
+    // --- Helpers ---
+    function v(id) { return document.getElementById(id).value.trim(); }
+    function d(id) { return document.getElementById(id).value; }
+
+    function escapeAttr(s) {
+      return (s || '').toString()
+        .replaceAll('&','&amp;')
+        .replaceAll('"','&quot;')
+        .replaceAll('<','&#60;')
+        .replaceAll('>','&#62;');
+    }
+
+    function blockQuote(text) {
+      if (!text) return '(none)';
+      // Markdown quote block
+      return text.split('\n').map(line => `> ${line}`).join('\n');
+    }
+
+    function buildSummary() {
+      const channels = getChannels();
+      const channelPart = channels.length ? channels.join(', ') : 'Channel TBD';
+
+      const assetType = v('assetType') || 'Asset';
+      const fmt = v('format');
+      const due = d('dueDate');
+
+      const filmOrInternal = document.getElementById('internalToggle').checked
+        ? 'Internal'
+        : (getFilms()[0] || v('campaign') || 'TBD');
+
+      // Format: [Channel(s)] – [Asset Type] – [Format] – [Film/Campaign/Internal] – Due YYYY-MM-DD
+      let s = `${channelPart} – ${assetType}`;
+      if (fmt) s += ` – ${fmt}`;
+      s += ` – ${filmOrInternal}`;
+      if (due) s += ` – Due ${due}`;
+      return s;
+    }
+
+    function buildMissing() {
+      const missing = [];
+      if (getChannels().length === 0) missing.push('Channel not selected');
+      if (!v('assetType')) missing.push('Asset type missing');
+      if (!d('dueDate')) missing.push('Due date missing');
+      if (!v('assetDescription')) missing.push('Asset description missing');
+
+      if (!document.getElementById('internalToggle').checked && getFilms().length === 0) {
+        missing.push('No film provided (or mark as Internal / Not film-related)');
+      }
+
+      // Often-needed but not strictly required
+      if (!v('exportLink')) missing.push('Export link not provided (final deliverable location)');
+      if (!v('sizes')) missing.push('Sizes not provided (if needed)');
+      if (!v('templateLink')) missing.push('Template link not provided (if applicable)');
+      if (!v('filmAssetLink') && !document.getElementById('internalToggle').checked) {
+        missing.push('Film asset link not provided (if applicable)');
+      }
+
+      return missing.length ? missing.map(m => `- ${m}`).join('\n') : '—';
+    }
+
+    function buildDescription() {
+      const channels = getChannels();
+      const films = getFilms();
+
+      const internal = document.getElementById('internalToggle').checked;
+
+      const lines = [];
+
+      lines.push(`## Request`);
+      lines.push(`- **Channel(s):** ${channels.length ? channels.join(', ') : 'TBD'}`);
+      lines.push(`- **Asset type:** ${v('assetType') || 'TBD'}`);
+      lines.push(`- **Format:** ${v('format') || 'TBD'}`);
+      lines.push(`- **Description:** ${v('assetDescription') || 'TBD'}`);
+      lines.push(`- **Due date:** ${d('dueDate') || 'TBD'}`);
+      lines.push(`- **Timesheet code:** ${v('timesheetCode') || '(none)'}`);
+      lines.push('');
+
+      lines.push(`## Film / Campaign`);
+      lines.push(`- **Films:** ${internal ? 'Internal / Not film-related' : (films.length ? films.join(', ') : 'TBD')}`);
+      lines.push(`- **Campaign:** ${v('campaign') || '(none)'}`);
+      lines.push('');
+
+      lines.push(`## Content`);
+      lines.push(`### Copy on asset`);
+      lines.push(blockQuote(v('copy')));
+      lines.push('');
+      lines.push(`### Imagery notes`);
+      lines.push(blockQuote(v('imagery')));
+      lines.push('');
+      lines.push(`- **Storyboard link:** ${v('storyboard') || '(none)'}`);
+      lines.push(`- **Mockup link:** ${v('mockup') || '(none)'}`);
+      lines.push('');
+      lines.push(`### Design notes`);
+      lines.push(blockQuote(v('designNotes')));
+      lines.push('');
+
+      lines.push(`## Specs / Links`);
+      lines.push(`### Sizes`);
+      lines.push(blockQuote(v('sizes')));
+      lines.push('');
+      lines.push(`- **Max file size:** ${v('maxFileSize') || '(none)'}`);
+      lines.push(`- **Template link:** ${v('templateLink') || '(none)'}`);
+      lines.push(`- **Film asset link:** ${v('filmAssetLink') || '(none)'}`);
+      lines.push('');
+      lines.push(`### Legal line`);
+      lines.push(blockQuote(v('legalLine')));
+      lines.push('');
+      lines.push(`- **Export link (final):** ${v('exportLink') || '(none)'}`);
+      lines.push('');
+
+      lines.push(`## Review`);
+      lines.push(`- **Specific reviewers:** ${v('reviewers') || '(none)'}`);
+      lines.push('');
+
+      lines.push(`## Open items / needs confirmation`);
+      lines.push(buildMissing());
+
+      return lines.join('\n');
+    }
+
+    function updateTaskName() {
+      // Use a human-friendly name in header:
+      // Prefer: Asset type + film/internal + due date
+      const assetType = v('assetType');
+      const due = d('dueDate');
+
+      let filmPart = '—';
+      if (document.getElementById('internalToggle').checked) filmPart = 'Internal';
+      else {
+        const films = getFilms();
+        filmPart = films[0] || v('campaign') || 'Film TBD';
+      }
+
+      const name = (assetType ? assetType : 'New deliverable') + ' • ' + filmPart + (due ? ` • ${due}` : '');
+      document.getElementById('taskName').textContent = name;
+    }
+
+    function refreshPreview() {
+    const summaryText = buildSummary();
+    const descText = buildDescription();
+    const missingText = buildMissing();
+
+    document.getElementById('summaryPreview').textContent = summaryText;
+    document.getElementById('descPreview').textContent = descText;
+    document.getElementById('missingPreview').textContent = missingText;
+
+    updateTaskName();
+
+    // update header pill
+    const missingCount =
+        (missingText === '—')
+        ? 0
+        : missingText.split('\n').filter(l => l.trim().startsWith('- ')).length;
+
+    const pill = document.getElementById('pill');
+    pill.textContent = `Missing: ${missingCount}`;
+    pill.classList.toggle('done', missingCount === 0);
+    }
+
+    async function copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (e) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+      }
+    }
+
+    function downloadMarkdown(filename, content) {
+      const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function safeFileName(s) {
+      return (s || 'jira-ticket')
+        .toLowerCase()
+        .replace(/[^a-z0-9-_]+/gi, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
+
+    // --- Wire up events ---
+    function wire() {
+      const inputIds = [
+        'assetType','format','assetDescription','dueDate','timesheetCode',
+        'campaign','copy','imagery','storyboard','mockup','designNotes',
+        'sizes','maxFileSize','templateLink','filmAssetLink','legalLine',
+        'exportLink','reviewers'
+      ];
+
+      inputIds.forEach(id => {
+        const el = document.getElementById(id);
+        el.addEventListener('input', refreshPreview);
+        el.addEventListener('change', refreshPreview);
+      });
+
+      // Channels
+      [...document.querySelectorAll('#channelChecks input[type="checkbox"]')]
+        .forEach(c => c.addEventListener('change', refreshPreview));
+
+      // Films
+      document.getElementById('addFilmBtn').addEventListener('click', () => addFilmRow(''));
+
+      // Internal toggle
+      document.getElementById('internalToggle').addEventListener('change', (e) => {
+        document.getElementById('filmsBlock').style.display = e.target.checked ? 'none' : 'block';
+        refreshPreview();
+      });
+
+      // Copy buttons
+      document.getElementById('copySummaryBtn').addEventListener('click', async () => {
+        await copyToClipboard(buildSummary());
+      });
+      document.getElementById('copyDescBtn').addEventListener('click', async () => {
+        await copyToClipboard(buildDescription());
+      });
+
+      // Download
+      document.getElementById('downloadBtn').addEventListener('click', () => {
+        const base = safeFileName(v('assetType') || 'jira-ticket');
+        const due = d('dueDate') || 'tbd';
+        const filename = `${base}_${due}.md`;
+        const content = `# ${buildSummary()}\n\n${buildDescription()}\n`;
+        downloadMarkdown(filename, content);
+      });
+
+      // Reset
+      document.getElementById('resetBtn').addEventListener('click', resetAll);
+    }
+
+    function resetAll() {
+      // Clear text inputs / textareas
+      [
+        'assetType','assetDescription','dueDate','timesheetCode',
+        'campaign','copy','imagery','storyboard','mockup','designNotes',
+        'sizes','maxFileSize','templateLink','filmAssetLink','legalLine',
+        'exportLink','reviewers'
+      ].forEach(id => document.getElementById(id).value = '');
+
+      document.getElementById('format').value = '';
+
+      // Uncheck channels
+      [...document.querySelectorAll('#channelChecks input[type="checkbox"]')]
+        .forEach(c => c.checked = false);
+
+      // Films reset
+      document.getElementById('internalToggle').checked = false;
+      document.getElementById('filmsBlock').style.display = 'block';
+      document.getElementById('filmsList').innerHTML = '';
+      addFilmRow('');
+
+      refreshPreview();
+    }
+
+    // init
+    wire();
+    addFilmRow('');
+    refreshPreview();
+  </script>
+</body>
+</html>

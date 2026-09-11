@@ -15,6 +15,9 @@
     --border-strong: rgba(0,0,0,0.14);
     --radius: 10px;
     --radius-sm: 6px;
+    --checkmark-styling: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' fill='none'%3E%3Crect width='10' height='10' rx='2' fill='%23000'/%3E%3C/svg%3E");
+    --checkmark-width: 10px;
+    --checkmark-height: 10px;
 }
 
 body.theme-checklist {
@@ -33,6 +36,9 @@ body.theme-checklist {
     --border-strong: rgba(0,0,0,0.14);
     --radius: 10px;
     --radius-sm: 6px;
+    --checkmark-styling: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2304AA6D' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");
+    --checkmark-width: 15px;
+    --checkmark-height: 15px;
 }
 
 /*body.theme-default {
