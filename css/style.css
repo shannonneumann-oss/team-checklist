@@ -1,16 +1,16 @@
 /* --- Master Global Theme & Variables --- */
-:root, body.theme-default {
-    --primary-color: #d47100;
-    --primary-hover: #ae5e02;
-    --bg-color: #3c3c3c;
-    --card-bg: #dedede;
-    --text-main: #272626;
-    --text-muted: #666666;
-    --text-faint: #a8a7a7;
-    --checked: #272626;
-    --mono: 'DM Mono', monospace;
-    --sans: 'EB Garamond', sans-serif;
-    --letter-spacing: normal;
+:root, body.theme-vue {
+    --primary-color: #ed7b29;
+    --primary-hover: #ffc400;
+    --bg-color: #111111;
+    --card-bg: #000000;
+    --text-main: #ffffff;
+    --text-muted: #111111;
+    --text-faint: #4c4c4d;
+    --checked: #111111;
+    --mono: 'Isonorm', monospace;
+    --sans: 'Isonorm', monospace;
+    --letter-spacing: 12.5%;
     --border: rgba(0,0,0,0.08);
     --border-strong: rgba(0,0,0,0.14);
     --radius: 10px;
@@ -35,18 +35,18 @@ body.theme-checklist {
     --radius-sm: 6px;
 }
 
-body.theme-vue {
-    --primary-color: #ed7b29;
-    --primary-hover: #ffc400;
-    --bg-color: #111111;
-    --card-bg: #000000;
-    --text-main: #ffffff;
-    --text-muted: #111111;
-    --text-faint: #4c4c4d;
-    --checked: #111111;
-    --mono: 'Isonorm', monospace;
-    --sans: 'Isonorm', sans-serif;
-    --letter-spacing: 12.5%;
+body.theme-default {
+    --primary-color: #d47100;
+    --primary-hover: #ae5e02;
+    --bg-color: #3c3c3c;
+    --card-bg: #dedede;
+    --text-main: #272626;
+    --text-muted: #666666;
+    --text-faint: #a8a7a7;
+    --checked: #272626;
+    --mono: 'DM Mono', monospace;
+    --sans: 'EB Garamond', sans-serif;
+    --letter-spacing: normal;
     --border: rgba(0,0,0,0.08);
     --border-strong: rgba(0,0,0,0.14);
     --radius: 10px;
