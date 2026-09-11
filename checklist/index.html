@@ -203,14 +203,14 @@
     height: 18px;
     min-width: 18px;
     border-radius: 5px;
-    border: none;
+    /*border: 0.1rem solid var(--text-faint);*/
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 1px;
     transition: background 0.15s, border-color 0.15s;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.07);
   }
   .item.checked .checkbox {
     background: var(--checked);
@@ -258,7 +258,7 @@
   .reset-btn:hover { color: var(--primary-hover); }
 </style>
 </head>
-<body class="theme-checklist">
+<body class="theme-vue">
  <div class="app-install-banner" id="installBanner">
     <span>💡 <strong>Tip for the best experience:</strong> Click the three dots <strong>(...)</strong> in your browser toolbar &rarr; <strong>Save and share</strong> &rarr; <strong>Create Shortcut...</strong> (and check <strong>"Open as window"</strong>) to turn this into a desktop applet!</span>
     <button onclick="dismissBanner()" style="background: var(--primary-color); color: var(--text-muted); border: none; padding: 6px 12px; font-size: 13px; border-radius: 4px; cursor: pointer; font-weight: 500; white-space: nowrap;">Got it!</button>
