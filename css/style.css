@@ -35,7 +35,7 @@ body.theme-checklist {
     --radius-sm: 6px;
 }
 
-body.theme-default {
+/*body.theme-default {
     --primary-color: #d47100;
     --primary-hover: #ae5e02;
     --bg-color: #3c3c3c;
@@ -52,6 +52,7 @@ body.theme-default {
     --radius: 10px;
     --radius-sm: 6px;
 }
+*/
 /* Global Font & Background (Safe for all pages) */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
